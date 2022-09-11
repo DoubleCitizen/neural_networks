@@ -1,5 +1,6 @@
+import datetime
 import pprint
-from Rnx2Pos import Rnx2Pos as RP
+# from Rnx2Pos import Rnx2Pos as RP
 from geodetic_time_serie import geodetic_time_serie as GDT
 from pandas import Period as Pd
 import datetime as dt
@@ -20,16 +21,36 @@ import datetime as dt
 #  if not line:
 #     break
 #  # выводим строку
+count = 1000
 
-a = GDT.test_coordinate_time_series_generator(1000)
+a = GDT.test_coordinate_time_series_generator(count)
 
 # print(a.lombescargle(axe_column="latitude(deg)",date_column="lGPSTtime",comb="day_year"))
 # delt=dt.timedelta(minutes=2)
 # a=GDT.pos2geodetic_time_serie(posfilepath=r"C:\Users\Admin\Downloads\tetsRNX\output",solution_selection_type="max_ratio",freqw=delt,sol_freq=dt.timedelta(hours=10))
 
+print(a)
 
 a = GDT(a)
 print(a.lombescargle(axe_column="X", date_column="Epoch", comb="day_year"))
+a.drop('Epoch', axis=1, inplace=True)
+
+time_list = []
+for t in range(count):
+    _date = datetime.date(2020, 1, 14)
+    _time = datetime.time(12, 30)
+    now_date = datetime.datetime.combine(_date, _time)
+    new_date = datetime.timedelta(days=30*t)
+    new_date = new_date + now_date
+    time_list.append(new_date)
+
+print(time_list)
+
+a.loc[:, "epoch"] = time_list
+a = a.set_index('epoch')
+
+a.drop(['Y', 'Z'], axis=1, inplace=True)
+
 # a=a.outliers_filtering(axe='latitude(deg)',type= 'iqr')
 
 # print(a.outliers_filtering(axe='latitude(deg)',type='iqr'))

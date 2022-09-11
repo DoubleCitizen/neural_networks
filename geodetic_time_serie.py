@@ -95,6 +95,7 @@ class geodetic_time_serie(DataFrame):
         Z_cosine_semiannual = -1.13996274591522e-02
         Z_sine_semiannual = -5.53152026612332e-03
         coordinate_time_series = np.zeros((period, 4))
+        print(coordinate_time_series)
         for t in range(period):
             xt = x0 + vx * t / 365 + X_cosine_annual * m.cos(
                 2 * m.pi * t / 365) + X_sine_annual * m.sin(2 * m.pi * t / 365) + X_cosine_semiannual * m.cos(
@@ -105,6 +106,8 @@ class geodetic_time_serie(DataFrame):
             zt = z0 + vz * t / 365 + Z_cosine_annual * m.cos(2 * m.pi * t / 365) + Z_sine_annual * m.sin(
                 2 * m.pi * t / 365) + Z_cosine_semiannual * m.cos(4 * m.pi * t / 365) + Z_sine_semiannual * m.sin(
                 4 * m.pi * t / 365) + random.randint(10, 10) / 10000
+
+
             coordinate_time_series[t][0] = xt
             coordinate_time_series[t][1] = yt
             coordinate_time_series[t][2] = zt
@@ -113,21 +116,21 @@ class geodetic_time_serie(DataFrame):
         a = DataFrame(coordinate_time_series, columns=['X', 'Y', 'Z', 'Epoch'])
         return a
 
-    def kinematic_model_estimation(axe, date_column, type):
-
-        if type is "SimpleLS":
-            A = np.zeros((self[axe].shape[0], 6))
-            X = np.empty((3, 6))
-            t = self[date_column]
-            for i in range(self[date_column].shape[0]):
-                A[i] = np.array(
-                    [1, t, m.sin(2 * m.pi * t), m.cos(2 * m.pi * t), m.sin(4 * m.pi * t), m.cos(4 * m.pi * t)])
-            N = -A.transpose().dot(A)
-            for j in range(3):
-                L = coordinate_time_series.transpose()[j]
-                X[j] = - np.linalg.inv(N).dot(A.transpose().dot(L))
-            print(X[0][0] - x0, X[0][1] - vx)
-            return
+    # def kinematic_model_estimation(axe, date_column, type):
+    #
+    #     if type is "SimpleLS":
+    #         A = np.zeros((self[axe].shape[0], 6))
+    #         X = np.empty((3, 6))
+    #         t = self[date_column]
+    #         for i in range(self[date_column].shape[0]):
+    #             A[i] = np.array(
+    #                 [1, t, m.sin(2 * m.pi * t), m.cos(2 * m.pi * t), m.sin(4 * m.pi * t), m.cos(4 * m.pi * t)])
+    #         N = -A.transpose().dot(A)
+    #         for j in range(3):
+    #             L = coordinate_time_series.transpose()[j]
+    #             X[j] = - np.linalg.inv(N).dot(A.transpose().dot(L))
+    #         print(X[0][0] - x0, X[0][1] - vx)
+    #         return
 
     def pos2geodetic_time_serie(posfilepath, solution_selection_type, freqw, sol_freq):
         # to do: 1) дискриминатор временных рядов по разным станциям. Читать в заголовке приблизительные коорданаты и если координаты различаются более чем наперед заданное пользователем значение - создавать разные временные ряды
