@@ -21,9 +21,6 @@ test = data_coord_1.NSK1
 
 df = pd.concat([train, test], axis=0)
 
-print("fdfd")
-print(df)
-print("fdsfsd")
 
 
 
@@ -33,9 +30,6 @@ scaler = scaler.fit(df[['X']])
 train['X'] = scaler.transform(train[['X']])
 test['X'] = scaler.transform(test[['X']])
 
-print("---------")
-print(train['X'])
-print("---------")
 
 
 # создание набора данных
@@ -116,15 +110,11 @@ test_score_df['threshold'] = THRESHOLD
 test_score_df['anomaly'] = test_score_df.loss > test_score_df.threshold
 test_score_df['X'] = test[TIME_STEPS:].X
 
-print("++++++++")
-print(test_score_df['loss'])
-print("++++++++")
+
 
 anomalies = test_score_df[test_score_df.anomaly == True]
 
-print(type(anomalies))
-print(f"anomalies = \n{anomalies}")
-print("+++++++")
+
 print(anomalies['loss'])
 print(anomalies.keys())
 print(anomalies.values)

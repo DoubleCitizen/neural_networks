@@ -21,9 +21,9 @@ import datetime as dt
 #  if not line:
 #     break
 #  # выводим строку
-count = 1000
+count = 300
 
-a = GDT.test_coordinate_time_series_generator(count)
+a = GDT.test_coordinate_time_series_generator(count, 0, 10)
 
 # print(a.lombescargle(axe_column="latitude(deg)",date_column="lGPSTtime",comb="day_year"))
 # delt=dt.timedelta(minutes=2)
@@ -32,22 +32,26 @@ a = GDT.test_coordinate_time_series_generator(count)
 print(a)
 
 a = GDT(a)
-print(a.lombescargle(axe_column="X", date_column="Epoch", comb="day_year"))
-a.drop('Epoch', axis=1, inplace=True)
 
 time_list = []
 for t in range(count):
-    _date = datetime.date(2020, 1, 14)
+    _date = datetime.date(2015, 1, 14)
     _time = datetime.time(12, 30)
     now_date = datetime.datetime.combine(_date, _time)
-    new_date = datetime.timedelta(days=30*t)
+    new_date = datetime.timedelta(weeks=t)
     new_date = new_date + now_date
     time_list.append(new_date)
 
-print(time_list)
+
+a.drop('Epoch', axis=1, inplace=True)
+
+
 
 a.loc[:, "epoch"] = time_list
+print(a.lombescargle(axe_column="X", date_column="epoch", comb="day_year"))
 a = a.set_index('epoch')
+
+
 
 a.drop(['Y', 'Z'], axis=1, inplace=True)
 

@@ -75,7 +75,7 @@ class geodetic_time_serie(DataFrame):
         if type is "Neural_Network_LTCM":
             return
 
-    def test_coordinate_time_series_generator(period):
+    def test_coordinate_time_series_generator(period, random_from, random_after):
         x0 = 4.52260828455453e+05
         y0 = 3.63587749472371e+06
         z0 = 5.20345321431246e+06
@@ -99,13 +99,13 @@ class geodetic_time_serie(DataFrame):
         for t in range(period):
             xt = x0 + vx * t / 365 + X_cosine_annual * m.cos(
                 2 * m.pi * t / 365) + X_sine_annual * m.sin(2 * m.pi * t / 365) + X_cosine_semiannual * m.cos(
-                4 * m.pi * t / 365) + X_sine_semiannual * m.sin(4 * m.pi * t / 365) + random.randint(10, 10) / 10000
+                4 * m.pi * t / 365) + X_sine_semiannual * m.sin(4 * m.pi * t / 365) + random.randint(random_from, random_after) / 10000
             yt = y0 + vy * t / 365 + Y_cosine_annual * m.cos(2 * m.pi * t / 365) + Y_sine_annual * m.sin(
                 2 * m.pi * t / 365) + Y_cosine_semiannual * m.cos(4 * m.pi * t / 365) + Y_sine_semiannual * m.sin(
-                4 * m.pi * t / 365) + random.randint(10, 10) / 10000
+                4 * m.pi * t / 365) + random.randint(random_from, random_after) / 10000
             zt = z0 + vz * t / 365 + Z_cosine_annual * m.cos(2 * m.pi * t / 365) + Z_sine_annual * m.sin(
                 2 * m.pi * t / 365) + Z_cosine_semiannual * m.cos(4 * m.pi * t / 365) + Z_sine_semiannual * m.sin(
-                4 * m.pi * t / 365) + random.randint(10, 10) / 10000
+                4 * m.pi * t / 365) + random.randint(random_from, random_after) / 10000
 
 
             coordinate_time_series[t][0] = xt
