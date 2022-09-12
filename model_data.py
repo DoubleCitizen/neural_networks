@@ -1,6 +1,8 @@
 import datetime
 import pprint
 # from Rnx2Pos import Rnx2Pos as RP
+from matplotlib import pyplot as plt
+
 from geodetic_time_serie import geodetic_time_serie as GDT
 from pandas import Period as Pd
 import datetime as dt
@@ -21,9 +23,9 @@ import datetime as dt
 #  if not line:
 #     break
 #  # выводим строку
-count = 300
+count = 1000
 
-a = GDT.test_coordinate_time_series_generator(count, 0, 10)
+a = GDT.test_coordinate_time_series_generator(count, 1000, 10000)
 
 # print(a.lombescargle(axe_column="latitude(deg)",date_column="lGPSTtime",comb="day_year"))
 # delt=dt.timedelta(minutes=2)
@@ -48,8 +50,13 @@ a.drop('Epoch', axis=1, inplace=True)
 
 
 a.loc[:, "epoch"] = time_list
-print(a.lombescargle(axe_column="X", date_column="epoch", comb="day_year"))
+# print(a.lombescargle(axe_column="X", date_column="epoch", comb="day_year"))
 a = a.set_index('epoch')
+
+
+plt.plot(a.X)
+plt.grid()
+plt.show()
 
 
 
